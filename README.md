@@ -4,7 +4,7 @@ Room exploration game implemented in Java and Swing
 
 **[⭐️ Version Francais ⭐️](#Table-de-matières)**
 
-**[⭐️ English Version ⭐️](##Table-of-content)**
+**[⭐️ English Version ⭐️](#Table-of-content)**
 
 
 ## Table de matières 
