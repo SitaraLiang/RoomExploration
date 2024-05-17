@@ -20,21 +20,19 @@ semestre de la Licence Informatique de l'Université de Strasbourg. Il se concen
 
 
 #### Composition du jeu et règles
-Le jeu met en scène à la fois des joueurs et des monstres. Les joueurs doivent avancer de salle en
-salle jusqu'à atteindre la fin. Chaque niveau comporte deux types de monstres : les vampires et
-les loups-garous. De plus, deux types d'objets sont présents : les trésors et les épées.
+Le jeu met en scène à la fois des joueurs et des monstres. Les joueurs doivent avancer de salle en salle jusqu'à atteindre la fin. Chaque niveau comporte deux types de monstres : les vampires et les loups-garous. De plus, deux types d'objets sont présents : les trésors et les épées.
 
 Les lettres correspondantes et leur signification dans le jeu:
 
 | Keys     |  Signification      | 
 |--------- |-------------------|
-|    J     |   Joueur/Player       | 
+|    J     |   Joueur       | 
 |    V     |    Vampire| 
-|    W     |    Loup-garou/Werewolf|
-|    T     |    Tresor/Treasure    | 
-|    E     |    Epee/Sword       | 
-|    P     |    Porte/Door            |
-|    S     |    Sortie/Exit        |
+|    W     |    Loup-garou|
+|    T     |    Tresor  | 
+|    E     |    Epee      | 
+|    P     |    Porte           |
+|    S     |    Sortie        |
 
 
 Les joueurs peuvent collecter des trésors et des épées pendant le jeu, les utiliser pour se défendre
@@ -158,9 +156,103 @@ Le diagramme UML global du projet:
 
 ## Introduction & Usage
 
-## Design & Modelization
+This project is part of the Object Oriented Programming course of the fourth semester of the Computer Science Degree at the University of Strasbourg. It mainly focuses on the game "Room Exploration". Based on the project description, I developed and created the game by integrating personalized features. The implementation was carried out in Java, with the creation of the graphical interface carried out in Swing.
+
+
+#### Game composition and rules
+
+The game features both players and monsters. Players must advance from room to room until they reach the end. Each level has two types of monsters: vampires and werewolves. In addition, two types of items are present: treasures and swords.
+
+The corresponding letters and their meaning in the game:
+
+
+| Keys     |  Signification      | 
+|--------- |-------------------|
+|    J     |   Player       | 
+|    V     |   Vampire| 
+|    W     |    Werewolf|
+|    T     |    Treasure    | 
+|    E     |    Sword       | 
+|    P     |    Door            |
+|    S     |    Exit        |
+
+
+Players can collect treasures and swords during gameplay, use them to defend themselves or kill monsters. The final score is calculated based on the number of items collected and the attack of the monsters.
+
+- Vampire attack: the player is forced to return to the starting position without the objects are refreshed.
+- Werewolf attack: bite the player, reducing health points.
+- Use of treasure: restore part of the player's life points.
+- Use of sword: attack monsters.
+
+
+There are three game levels by default, the program loads the game template from the template.txt file. To configure the game according to your tastes, please see the following part: use and configuration.
+
+
+#### Usage & Configuration
+
+- Start the day:
+     - Import the project into IntelliJ or Eclipse.
+     - Run the program in the Test package, the game interface will appear automatically.
+     - You can then follow the instructions and play the game.
+
+- Configuration: In the Template package you have the option to adjust the settings of the game according to the desired gaming experience in the Configuration.java file. The latter includes various elements such as the path of the game model file, the maximum number of levels, the speed of the monsters, the hit points of the player and the monsters, the energy of the objects, as well as the power of the monsters, among others.
+
+
+## Design & Modeling
+
+To structure the graphical application, I opted for the MVC architecture (Model-View-Controller). In the Model package, I implemented all the business classes of the game. Vue package constitutes the part responsible for presenting the application to the user and on which the latter interacts. As for the Controller package, it is dedicated to interpreting user actions in order to act on the model and the view. Additionally, an Exceptions package as well as a Tests package have also been included.
+
+Here is the structure of the project package:
+
+- src
+     - Model
+     - View
+     - Controller
+     - Exception
+     - Test
+
+#### Job Classes
+
+For each element of the game I created a class: **Player**, **Vampire**, **Werewolf**, **Sword**, **Treasure**. During the modeling process, I used various methods in Patron Conception.
+
+*Template methods*
+
+I used the Template method to create a class with a method that carries out the algorithm
+common by calling abstract methods redefined in its subclasses. In the classroom abstract Monster, I implemented concrete methods (`move`, `isValidMove`, `detectPlayer`, etc) and the abstract function `Attack`. Different monsters have different actions, so the child classes (*Vampire* and *Werewolf*) extend the *Monster* class and then implement the `Attack` function.
+
+*Method facade*
+
+I used the Façade method to create an intermediate class between the complex classes and the client. For example, the *GameControleur* class is an intermediate class between the business classes and the client, it is also an intermediate class between the graphical interface classes and the client, the business classes and the graphical interface classes. The complexity is encapsulated in the facade. In the *Game* class, we encapsulate more complex methods like player and monster moves with easier methods (`moveMonstre`, `movePlayer`, etc). Same for the initializeGrid instance method of *EnsDeSalles*, instead of managing the complexity, the client can create a Game object directly.
+
+*Observer Method*
+
+I used the Observer method to create two interfaces for observers: *ChangePositionListener* and *MonsterAttackListener*, which inherit from the *EventListener* interface. Each of these interfaces contains a method taking as argument an object of type *ChangementPositionEvent* (`PositonChangee()`) and *MonsterAttackEvent* (`MonsterAttackEffect()`),
+respectively. The *Game* class is observable. The `PositionChangee()` and `MonsterAttackEffect()` methods can be called at any time in any method of the *Game* class. In parallel, the *VueGame* class in the *Vue* package implements the *ChangePositionListener* and *MonsterAttackListener* interfaces, which allows it to listen to the business class and react to different events.
+
+#### GUI
+
+In my conception of the game, it is mainly divided into five interfaces: home, game rules, level selection, main game interface and ending. For this, I created five classes which inherit respectively from JPanel: VueWelcome, VueTutorial, VueLevel, VueGame and VueTerminate. Additionally, I implemented a GameUI class that inherits from JFrame and represents the main window. Inside this class, I created and changed the different JPanels based on user actions (for example, retrieving player choices via MouseListener). So, in the GameControleur, all you have to do is create a new GameUI instance.
+
+The VueGame class implements the ChangePositionListener and ChangementPositionListener interfaces. MonsterAttackListener, allowing it to listen to the business class and react to different
+events. When the player clicks a button to interact with the game (moving, retrieval or use of an object), it calls the corresponding function in the class
+GameController. Then this function in GameControleur notifies the business classes for update statuses.
+
+#### Controller
+In the Main.java of the Test package, it is possible to directly create a GameController object, then call the DisplayViews() function to start the game. Thus, the GameController class acts as an interface between the model classes and the sight classes. It manages interactions and events between the two packages: data from business classes is observed by GUI classes (listeners), and these listeners send their events to the controller. This updates and launches processing for the classes of the model and view. Ideally, the model classes do not depend on the view classes.
 
 ## Inplementation
+In order to improve the implementation of this game, I used Java concepts such as polymorphism, encapsulation and inheritance. I created the Object and Living interfaces for the Player and Monster, Treasure and Sword classes, which share common characteristics as well as some similar functions. To make implementation easier and increase flexibility, I also introduced enums for Keys, Directions, Token, as well as Music. This way, if one wants to change settings or add new features in the future, it will be easier to do so.
+
+*Threads*
+
+During the process of implementing the code, I also saw the need to use Threads to parallelize the player's inputs with the monster's actions. So, in the startGame function, I created a thread to manage the movement and actions of the monsters. Additionally, in the showGame function of the GameUI class, I set up another thread to parallelize the GUI with the business functionalities.
+
+
+*Monster Actions*
+
+Before each monster attacks, it must first detect the presence of a nearby player. Similarly, when a player collects items or attacks monsters, they must also detect if there are any items or monsters nearby. To do this, I implemented several auxiliary equations to detect the position of players or monsters.
 
 ## Annex (UML)
 
+The overall UML diagram of the project:
+  ![UML global](assets/Diagram_Overall.png)
