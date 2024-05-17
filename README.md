@@ -130,7 +130,7 @@ Le diagramme UML global du projet:
 
 ## Table of content
 - [Introduction & Usage](#introduction--usage)
-- [Design & Modelization](#design--modelization)
+- [Design & Modelization](#design--modeling)
 - [Inplementation](#inplementation)
 - [Annex (UML)](#annex-uml)
 
