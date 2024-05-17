@@ -99,7 +99,7 @@ J’ai utilisé la méthode Façade pour créer une classe intermédiaire entre 
 J'ai utilisé la méthode Observer pour créer deux interfaces pour les observateurs :     *ChangementPositionListener* et *MonsterAttackListener*, qui héritent de l'interface *EventListener*. Chacune de ces interfaces contient une méthode prenant en argument un objet de type *ChangementPositionEvent* (`PositonChangee()`) et *MonsterAttackEvent* (`MonsterAttackEffect()`),
 respectivement. La classe *Jeu* est observable. Les méthodes `PositionChangee()` et `MonsterAttackEffect()` peuvent être appelées à n'importe quel moment dans n'importe quelle méthode de la classe *Jeu*. En parallèle, la classe *VueGame* dans le package *Vue* implémente les interfaces *ChangementPositionListener* et *MonsterAttackListener*, ce qui lui permet d'écouter la classe métier et de réagir aux différents événements.
 
-##### GUI
+#### GUI
 Dans ma conception du jeu, celui-ci est principalement divisé en cinq interfaces : accueil, règles du jeu, sélection de niveau, interface principale du jeu et fin. Pour cela, j'ai créé cinq classes qui héritent respectivement de JPanel : VueWelcome, VueTutorial, VueLevel, VueGame et VueTerminate. De plus, j'ai mis en place une classe GameUI qui hérite de JFrame et représente la fenêtre principale. À l'intérieur de cette classe, j’ai créé et changé les différents JPanel en fonction des actions de l'utilisateur (par exemple, en récupérant les choix du joueur via MouseListener). Ainsi, dans le GameControleur, il suffit simplement de créer une nouvelle instance de GameUI.
 
 La classe VueGame implémente les interfaces ChangementPositionListener et
